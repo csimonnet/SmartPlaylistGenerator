@@ -15,5 +15,8 @@ parameters:
     mailer_user: ~
     mailer_password: ~
 
+    deezer_app_key: ItsCertainlyAKey
+    deezer_app_secret: ItsCertainlyASecret
+
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
