@@ -7,10 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DeezerController
 {
+
     /**
-     * @Route("/deezer/connect")
+     * @Route("/deezer/authorize", name="deezer_authorize")
      */
-    public function connectAction()
-    {
-    }
+     public function authorizeAction() 
+     {
+     }
 }

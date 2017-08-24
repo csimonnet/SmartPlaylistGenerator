@@ -33,3 +33,10 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    AppBundle\Service\DeezerService:
+        # manually wire all arguments
+        public: true
+        arguments:
+            $router: '@router'
+            $deezerAppId: '%deezer_app_id%'
+            $deezerAppSecret: '%deezer_app_secret%'
