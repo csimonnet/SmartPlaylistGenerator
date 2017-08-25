@@ -38,5 +38,6 @@ services:
         public: true
         arguments:
             $router: '@router'
+            $session: '@session'
             $deezerAppId: '%deezer_app_id%'
             $deezerAppSecret: '%deezer_app_secret%'
