@@ -13,9 +13,10 @@ class DeezerService {
     protected $router;
     protected $session;
 
-    public function __construct($router, $session, $deezerAppId, $deezerAppSecret) {
+    public function __construct($router, $session, $logger, $deezerAppId, $deezerAppSecret) {
         $this->router = $router;
         $this->session = $session;
+        $this->logger = $logger;
         $this->deezerAppId = $deezerAppId;
         $this->deezerAppSecret = $deezerAppSecret;
     }
@@ -47,7 +48,7 @@ class DeezerService {
 
         $result = json_decode(curl_exec($ch));
         $this->session->set('deezer_access_token', $result->access_token);
-
+        curl_close($ch);
     }
 
     public function getAccessToken()
@@ -62,24 +63,52 @@ class DeezerService {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = json_decode(curl_exec($ch));
-        return $result->id;
-    }
+        curl_close($ch);
 
-    protected function getFavoritesAlbums()
-    {
-        $url = "http://api.deezer.com/user/me/albums?access_token=".$this->getAccessToken()."&limit=20";
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        return $result;
+        return $result->id;
     }
 
     public function generateRandomPlaylist()
     {
-        if($this->hasAccessToken()) {
-            $favoritesAlbum = $this->getFavoritesAlbums();
+        $url = "http://api.deezer.com/user/me/albums?access_token=".$this->getAccessToken()."&limit=300";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+
+        $albumList = $this->getRandomAlbums($result['data']);
+        $playlist = [];
+        foreach($albumList as $album) {
+            $playlist[] = $this->getRandomTrackFromAlbum($album);
         }
+        return $playlist;
+    }
+
+    protected function getRandomAlbums($albumList) 
+    {
+        $max = sizeof($albumList) - 1;
+        $nbRequested = 5;
+        $restrictedAlbumsList = [];
+        for($i=0; $i < $nbRequested; $i++) {
+            $index = rand(0, $max);
+            $restrictedAlbumsList[] = $albumList[$index];
+        }
+        return $restrictedAlbumsList;
+    }
+
+
+    protected function getRandomTrackFromAlbum($album)
+    {
+        $this->logger->info('getRandomTrackFromAlbum');
+        $url = $album["tracklist"]."?access_token=".$this->getAccessToken();
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $tracks = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+        $max = sizeof($tracks['data']) - 1;
+        return $tracks['data'][rand(0,$max)];
     }
 }
 

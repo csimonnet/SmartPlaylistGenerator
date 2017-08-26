@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div>Voici la playlist générée !</div>
+            <div>Nom :</div>
+            <div>Pistes:</div>
+            <ol>
+                {% for track in tracks %}
+                    <li>{{track.title}}</li>
+                {% endfor%}
+            </ol>
+        </div>
+    </div>
+{% endblock %}

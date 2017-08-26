@@ -39,5 +39,6 @@ services:
         arguments:
             $router: '@router'
             $session: '@session'
+            $logger: '@logger'
             $deezerAppId: '%deezer_app_id%'
             $deezerAppSecret: '%deezer_app_secret%'
