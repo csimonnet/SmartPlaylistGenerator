@@ -30,7 +30,7 @@ class DeezerService {
     }
 
     public function hasAccessToken() {
-
+        return $this->session->get('deezer_access_token') !== null;
     }
 
     public function requestAccessToken($code) {
@@ -50,6 +50,36 @@ class DeezerService {
 
     }
 
+    public function getAccessToken()
+    {
+        return $this->session->get('deezer_access_token');
+    }
 
+    public function getUserDeezerId()
+    {
+        $url = "https://api.deezer.com/user/me?access_token=".$this->getAccessToken();
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = json_decode(curl_exec($ch));
+        return $result->id;
+    }
+
+    protected function getFavoritesAlbums()
+    {
+        $url = "http://api.deezer.com/user/me/albums?access_token=".$this->getAccessToken()."&limit=20";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        return $result;
+    }
+
+    public function generateRandomPlaylist()
+    {
+        if($this->hasAccessToken()) {
+            $favoritesAlbum = $this->getFavoritesAlbums();
+        }
+    }
 }
 
