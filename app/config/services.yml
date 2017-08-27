@@ -42,3 +42,4 @@ services:
             $logger: '@logger'
             $deezerAppId: '%deezer_app_id%'
             $deezerAppSecret: '%deezer_app_secret%'
+            $tracksNumber: '%spg_default_tracks_number%'

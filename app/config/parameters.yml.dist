@@ -18,5 +18,7 @@ parameters:
     deezer_app_id: ItsCertainlyAnId
     deezer_app_secret: ItsCertainlyASecret
 
+    spg_default_tracks_number: 11
+
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt

@@ -12,13 +12,15 @@ class DeezerService {
     protected $deezerAppSecret;
     protected $router;
     protected $session;
+    protected $tracksNumber;
 
-    public function __construct($router, $session, $logger, $deezerAppId, $deezerAppSecret) {
+    public function __construct($router, $session, $logger, $deezerAppId, $deezerAppSecret, $tracksNumber) {
         $this->router = $router;
         $this->session = $session;
         $this->logger = $logger;
         $this->deezerAppId = $deezerAppId;
         $this->deezerAppSecret = $deezerAppSecret;
+        $this->tracksNumber = $tracksNumber;
     }
 
     public function getConnectUrl() {
@@ -102,8 +104,9 @@ class DeezerService {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch,CURLOPT_POST, count($parameters));
         curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($parameters));
-        $result = curl_exec($ch);
-        $this->logger->info($result);
+        $result = json_decode(curl_exec($ch), true);
+        $this->logger->info(json_encode($result));
+        curl_close($ch);
 
         $tracksId = array_map(function($element) {
             return $element['id'];
@@ -119,15 +122,15 @@ class DeezerService {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch,CURLOPT_POST, count($parameters));
         curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($parameters));
-
+        curl_exec($ch);
+        curl_close($ch);
     }
 
     protected function getRandomAlbums($albumList) 
     {
         $max = sizeof($albumList) - 1;
-        $nbRequested = 2;
         $restrictedAlbumsList = [];
-        for($i=0; $i < $nbRequested; $i++) {
+        for($i=0; $i < $this->tracksNumber; $i++) {
             $index = rand(0, $max);
             $restrictedAlbumsList[] = $albumList[$index];
         }
