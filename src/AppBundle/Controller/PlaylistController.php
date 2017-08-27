@@ -18,7 +18,6 @@ class PlaylistController extends Controller
      public function generatePlaylistDeezerAction(Request $request, DeezerService $deezerService)
      {
          $generatedPlaylist = $deezerService->generateRandomPlaylist();
-         var_dump($generatedPlaylist); die();
          return $this->render('playlist/generate_playlist.html.twig', [
             'tracks' => $generatedPlaylist
         ]);

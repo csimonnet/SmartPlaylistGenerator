@@ -25,7 +25,7 @@ class DeezerService {
         $parameters = [
             'app_id' => $this->deezerAppId,
             'redirect_uri' => $this->router->generate('deezer_authorize', array(), UrlGeneratorInterface::ABSOLUTE_URL),
-            'perms' => 'basic, emails'
+            'perms' => 'basic, emails, manage_library'
         ];
         return 'https://connect.deezer.com/oauth/auth.php?'.http_build_query($parameters);
     }
@@ -82,13 +82,50 @@ class DeezerService {
         foreach($albumList as $album) {
             $playlist[] = $this->getRandomTrackFromAlbum($album);
         }
+
+        $this->sendPlaylistToDeezer($playlist);
+
         return $playlist;
+    }
+
+    protected function sendPlaylistToDeezer($playlist)
+    {
+        $this->logger->info('sendPlaylistToDeezer');
+        $title = date('d/m/Y H:i:s');
+        $userId = $this->getUserDeezerId();
+        $url = "http://api.deezer.com/user/me/playlists?access_token=".$this->getAccessToken();
+        $parameters = array(
+            "title" => $title
+        );
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch,CURLOPT_POST, count($parameters));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($parameters));
+        $result = curl_exec($ch);
+        $this->logger->info($result);
+
+        $tracksId = array_map(function($element) {
+            return $element['id'];
+        }, $playlist);
+
+        $url = "http://api.deezer.com/playlist/".$result['id']."/tracks?access_token=".$this->getAccessToken();
+        $parameters = array(
+            "songs" => implode(",", $tracksId)
+        );
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch,CURLOPT_POST, count($parameters));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($parameters));
+
     }
 
     protected function getRandomAlbums($albumList) 
     {
         $max = sizeof($albumList) - 1;
-        $nbRequested = 5;
+        $nbRequested = 2;
         $restrictedAlbumsList = [];
         for($i=0; $i < $nbRequested; $i++) {
             $index = rand(0, $max);
@@ -102,11 +139,14 @@ class DeezerService {
     {
         $this->logger->info('getRandomTrackFromAlbum');
         $url = $album["tracklist"]."?access_token=".$this->getAccessToken();
+        $this->logger->info($url);
+        
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $tracks = json_decode(curl_exec($ch), true);
         curl_close($ch);
+        $this->logger->info(json_encode($tracks));
         $max = sizeof($tracks['data']) - 1;
         return $tracks['data'][rand(0,$max)];
     }

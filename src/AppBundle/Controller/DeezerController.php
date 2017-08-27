@@ -26,8 +26,8 @@ class DeezerController extends Controller
         } catch(\Exception $e) {
 
         }
-        return new JsonResponse(array("message" => "success"));
-        //return $this->redirect($this->get('router')->generate('homepage', array(), true));
+        
+        return $this->redirect($this->get('router')->generate('homepage', array(), true));
      }
 
      /**
