@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+
+body {
+    background-color: lightgray;
+    color: ghostwhite;
+    font-family: 'Dosis', sans-serif;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 21px;
+}
+
+header {
+    background-color: #034E6E;
+}
+
+.logo {
+    margin: 20px;
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    background-size: 120px 120px;
+    background-image: url('../images/logo.png');
+}

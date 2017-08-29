@@ -3,12 +3,21 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Smart Playlist Generator{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link href="{{ asset('bundles/app/css/reset.css') }}" rel="stylesheet" />
+            <link href="{{ asset('bundles/app/css/layout.css') }}" rel="stylesheet" />
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        <h1>Smart Playlist Generator</h1>
+        <header>
+            <div class="logo"></div>
+            <h1>Smart Playlist Generator</h1>
+        </header>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
+        <footer>
+
+        </footer>
     </body>
 </html>
