@@ -32,6 +32,11 @@ class Playlist
         return $this;
     }
 
+    public function addTrack(Track $track)
+    {
+        $this->tracks[] = $track;
+    }
+
     public function setDeezerId($deezerId)
     {
         $this->deezerId = $deezerId;

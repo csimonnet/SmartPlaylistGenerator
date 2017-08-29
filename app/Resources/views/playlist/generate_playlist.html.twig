@@ -7,9 +7,9 @@
             <div>Nom :</div>
             <div>Pistes:</div>
             <ol>
-                {% for track in tracks %}
-                    <li>{{track.title}}</li>
-                {% endfor%}
+                {% for track in playlist.tracks %}
+                    <li>{{ track.name }}</li>
+                {% endfor %}
             </ol>
         </div>
     </div>
