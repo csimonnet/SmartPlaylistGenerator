@@ -19,7 +19,7 @@ class PlaylistController extends Controller
      {
          $generatedPlaylist = $deezerService->generateRandomPlaylist();
          return $this->render('playlist/generate_playlist.html.twig', [
-            'tracks' => $generatedPlaylist
+            'playlist' => $generatedPlaylist
         ]);
      }
 }

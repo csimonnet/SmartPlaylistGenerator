@@ -2,6 +2,9 @@
 namespace AppBundle\Service;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use AppBundle\Entity\Playlist;
+use AppBundle\Entity\Album;
+use AppBundle\Entity\Track;
 
 /**
 * Manages Deezer URLs
@@ -80,9 +83,12 @@ class DeezerService {
         curl_close($ch);
 
         $albumList = $this->getRandomAlbums($result['data']);
-        $playlist = [];
+        $playlist = new Playlist();
         foreach($albumList as $album) {
-            $playlist[] = $this->getRandomTrackFromAlbum($album);
+            $track = $this->getRandomTrackFromAlbum($album);
+            if($track !== null) {
+                $playlist->addTrack($this->getRandomTrackFromAlbum($album));
+            }
         }
 
         $this->sendPlaylistToDeezer($playlist);
@@ -94,7 +100,6 @@ class DeezerService {
     {
         $this->logger->info('sendPlaylistToDeezer');
         $title = date('d/m/Y H:i:s');
-        $userId = $this->getUserDeezerId();
         $url = "http://api.deezer.com/user/me/playlists?access_token=".$this->getAccessToken();
         $parameters = array(
             "title" => $title
@@ -109,8 +114,8 @@ class DeezerService {
         curl_close($ch);
 
         $tracksId = array_map(function($element) {
-            return $element['id'];
-        }, $playlist);
+            return $element->getDeezerId();
+        }, $playlist->getTracks());
 
         $url = "http://api.deezer.com/playlist/".$result['id']."/tracks?access_token=".$this->getAccessToken();
         $parameters = array(
@@ -143,15 +148,22 @@ class DeezerService {
         $this->logger->info('getRandomTrackFromAlbum');
         $url = $album["tracklist"]."?access_token=".$this->getAccessToken();
         $this->logger->info($url);
-        
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $tracks = json_decode(curl_exec($ch), true);
         curl_close($ch);
         $this->logger->info(json_encode($tracks));
-        $max = sizeof($tracks['data']) - 1;
-        return $tracks['data'][rand(0,$max)];
+        if(array_key_exists('data', $tracks)) {
+            $track = new Track();
+            $max = sizeof($tracks['data']) - 1;
+            $dataTrack =  $tracks['data'][rand(0,$max)];
+            $track->setDeezerId($dataTrack['id']);
+            $track->setName($dataTrack['title']);
+            return $track;
+        }
+        return null;
+
     }
 }
 
