@@ -3,15 +3,16 @@
 {% block body %}
     <div id="wrapper">
         <div id="container">
-            {%  if access_token %}
+            <div id="presentation">
+                <img src="{{asset('bundles/app/images/logo.png')}}" />
+                <div class="description">Le "Smart Playlist Generator" vous permet de générer une playlist à partir de vos albums Deezer favoris !</div>
+            </div>
+            <div id="action">
+                Cliquez sur le bouton ci-dessous pour vous connecter à Deezer et permettre au générateur de créer votre playlist aléatoire.
                 <div class="generate">
                     <a href="{{ path('deezer_playlist_generate') }}">Générer une playlist ! </a>
                 </div>
-            {% else %}
-                <div class="connection">
-                    <a class="connect-link" href="{{ deezer_url }}">Se connecter avec Deezer</a>
-                </div>
-            {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
