@@ -41,8 +41,9 @@ html {
 
       #presentation {
         height: calc(~"100vh");
-        width: 50%;
-        display: inline-block;
+        width: calc(~"50% - 3px");
+        border-right: 3px solid grey;
+        float: left;
         background-color: @color-complement-1;
         color: black;
         vertical-align: middle;
@@ -62,30 +63,36 @@ html {
 
       #action{
         vertical-align: top;
-        width: 45%;
-        padding-left: 20px;
-        height: calc(100vh - 100px - 25%);
-        display: inline-block;
+        width: 50%;
+        margin-top: 100px;
+        height: calc(~"100vh - 100px");
+        float: right;
         color: black;
         font-size: 21px;
-        margin-top: 25%;
         text-align: center;
-        
-        .generate {
-          margin: 5px;
-          a {
-            background-color: @color-complement-3;
-            box-shadow: 0px 0px 20px 0px grey;
-            border: none;
-            color: black;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin-top: 30px;
+        background-color: lightgray;
+        border-left: 1% solid black;
+        .action-content {
+          margin-top: 40%;
+          width: 80%;
+          margin-left: auto;
+          margin-right: auto;
+          .generate {
+            a {
+              background-color: @color-complement-3;
+              box-shadow: 0px 0px 20px 0px grey;
+              border: none;
+              color: black;
+              padding: 15px 32px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+              margin-top: 30px;
+            }
           }
         }
+        
       }
     }
   }
