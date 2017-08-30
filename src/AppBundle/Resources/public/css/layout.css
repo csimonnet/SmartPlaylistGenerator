@@ -51,8 +51,8 @@ html body #container #presentation {
   width: calc(50% - 3px);
   border-right: 3px solid grey;
   float: left;
-  background-color: #D2F85E;
-  color: black;
+  background-color: black;
+  color: white;
   vertical-align: middle;
 }
 html body #container #presentation img {
@@ -76,7 +76,7 @@ html body #container #action {
   color: black;
   font-size: 21px;
   text-align: center;
-  background-color: lightgray;
+  background-color: #f7f7f7;
   border-left: 1% solid black;
 }
 html body #container #action .action-content {
@@ -86,10 +86,11 @@ html body #container #action .action-content {
   margin-right: auto;
 }
 html body #container #action .action-content .generate a {
-  background-color: #A1D500;
+  background-color: #E07700;
   box-shadow: 0px 0px 20px 0px grey;
+  border-radius: 5px;
   border: none;
-  color: black;
+  color: white;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
