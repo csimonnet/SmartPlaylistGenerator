@@ -27,6 +27,6 @@ class DeezerController extends Controller
 
         }
         
-        return $this->redirect($this->get('router')->generate('homepage', array(), true));
+        return $this->redirect($this->get('router')->generate('deezer_playlist_generate', array(), true));
      }
 }
