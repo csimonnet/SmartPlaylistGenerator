@@ -3,14 +3,24 @@
 {% block body %}
     <div id="wrapper">
         <div id="container">
-            <div>Voici la playlist générée !</div>
-            <div>Nom :</div>
-            <div>Pistes:</div>
-            <ol>
-                {% for track in playlist.tracks %}
-                    <li>{{ track.name }}</li>
-                {% endfor %}
-            </ol>
+            <div id="tile-left">
+                <div class="tile-content">
+                    <img src="{{asset('bundles/app/images/logo.png')}}" />
+                    <div class="description">Playlist générée ! </div>
+                </div>
+            </div>
+            <div id="tile-right">
+                <div class="tile-content">
+                    <div class="playlist-title">
+                        {{ playlist.name }}
+                    </div>
+                    <ol class="playlist">
+                        {% for track in playlist.tracks %}
+                            <li>{{ track.name }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

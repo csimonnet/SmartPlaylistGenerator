@@ -39,7 +39,7 @@ html {
     }
     #container {
 
-      #presentation {
+      #tile-left {
         height: calc(~"100vh");
         width: calc(~"50% - 3px");
         border-right: 3px solid grey;
@@ -47,33 +47,36 @@ html {
         background-color: black;
         color: white;
         vertical-align: middle;
-        img {
-          margin-top: 30%;
-          width: 50%;
-          height: 50%;
-        }
-        .description {
-          margin-top: 50%;
-          display: inline-block;
-          width: 40%;
-          vertical-align: top;
-          font-size: 25px;
+        .tile-content {
+          margin-top: 160px;
+          img {
+            width: 420px;
+            height: 420px;
+            margin-left: 25%;
+          }
+          .description {
+            margin-top: 20px;
+            display: inline-block;
+            width: 50%;
+            vertical-align: top;
+            font-size: 25px;
+            margin-left: 16%;
+            text-align: center
+          }
         }
       }
 
-      #action{
+      #tile-right{
         vertical-align: top;
         width: 50%;
-        margin-top: 100px;
-        height: calc(~"100vh - 100px");
+        height: 100vh;
         float: right;
         color: black;
         font-size: 21px;
         text-align: center;
         background-color: #f7f7f7;
-        border-left: 1% solid black;
-        .action-content {
-          margin-top: 40%;
+        .tile-content {
+          margin-top: 150px;
           width: 80%;
           margin-left: auto;
           margin-right: auto;
@@ -92,6 +95,23 @@ html {
               margin-top: 30px;
             }
           }
+          .playlist-title {
+            padding: 5px;
+            background-color: #52A5C9;
+            text-align: left;
+            font-size: 30px;
+          }
+          ol {
+            &.playlist {
+              text-align: left;
+              li {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                border-bottom: 5px solid #a8a8a8
+              }
+            }
+          }
+
         }
         
       }

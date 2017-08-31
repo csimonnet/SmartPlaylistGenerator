@@ -100,6 +100,7 @@ class DeezerService {
     {
         $this->logger->info('sendPlaylistToDeezer');
         $title = date('d/m/Y H:i:s');
+        $playlist->setName($title);
         $url = "http://api.deezer.com/user/me/playlists?access_token=".$this->getAccessToken();
         $parameters = array(
             "title" => $title
