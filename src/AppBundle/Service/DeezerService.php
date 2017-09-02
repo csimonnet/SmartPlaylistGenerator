@@ -16,14 +16,16 @@ class DeezerService {
     protected $router;
     protected $session;
     protected $tracksNumber;
+    protected $timeout;
 
-    public function __construct($router, $session, $logger, $deezerAppId, $deezerAppSecret, $tracksNumber) {
+    public function __construct($router, $session, $logger, $deezerAppId, $deezerAppSecret, $tracksNumber, $timeout) {
         $this->router = $router;
         $this->session = $session;
         $this->logger = $logger;
         $this->deezerAppId = $deezerAppId;
         $this->deezerAppSecret = $deezerAppSecret;
         $this->tracksNumber = $tracksNumber;
+        $this->timeout = $timeout;
     }
 
     public function getConnectUrl() {
@@ -47,13 +49,8 @@ class DeezerService {
             'output' => 'json'
         ];
         $url = 'https://connect.deezer.com/oauth/access_token.php?'.http_build_query($parameters);
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $result = json_decode(curl_exec($ch));
-        $this->session->set('deezer_access_token', $result->access_token);
-        curl_close($ch);
+        $result = $this->request($url);
+        $this->session->set('deezer_access_token', $result['access_token']);
     }
 
     public function getAccessToken()
@@ -64,25 +61,16 @@ class DeezerService {
     public function getUserDeezerId()
     {
         $url = "https://api.deezer.com/user/me?access_token=".$this->getAccessToken();
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = json_decode(curl_exec($ch));
-        curl_close($ch);
-
-        return $result->id;
+        $result = $this->request($url);
+        return $result["id"];
     }
 
     public function generateRandomPlaylist()
     {
         $url = "http://api.deezer.com/user/me/albums?access_token=".$this->getAccessToken()."&limit=300";
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = json_decode(curl_exec($ch), true);
-        curl_close($ch);
-
+        $result = $this->request($url);
         $albumList = $this->getRandomAlbums($result['data']);
+
         $playlist = new Playlist();
         foreach($albumList as $album) {
             $track = $this->getRandomTrackFromAlbum($album);
@@ -105,14 +93,7 @@ class DeezerService {
         $parameters = array(
             "title" => $title
         );
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch,CURLOPT_POST, count($parameters));
-        curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($parameters));
-        $result = json_decode(curl_exec($ch), true);
-        $this->logger->info(json_encode($result));
-        curl_close($ch);
+        $result = $this->request($url, "POST", $parameters);
 
         $tracksId = array_map(function($element) {
             return $element->getDeezerId();
@@ -122,14 +103,7 @@ class DeezerService {
         $parameters = array(
             "songs" => implode(",", $tracksId)
         );
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch,CURLOPT_POST, count($parameters));
-        curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($parameters));
-        curl_exec($ch);
-        curl_close($ch);
+        $this->request($url, "POST", $parameters);
     }
 
     protected function getRandomAlbums($albumList) 
@@ -166,5 +140,22 @@ class DeezerService {
         return null;
 
     }
+
+    protected function request($url, $method = "GET", $parameters = [])
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout + 5 );
+        if($method == "POST") {
+            curl_setopt($ch,CURLOPT_POST, count($parameters));
+            curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($parameters));
+        }
+        $response = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+        return $response;
+    }
 }
+
 

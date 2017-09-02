@@ -43,3 +43,4 @@ services:
             $deezerAppId: '%deezer_app_id%'
             $deezerAppSecret: '%deezer_app_secret%'
             $tracksNumber: '%spg_default_tracks_number%'
+            $timeout: '%spg_deezer_timeout%'
