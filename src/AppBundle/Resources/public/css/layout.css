@@ -57,19 +57,19 @@ html body #container #tile-left {
 }
 html body #container #tile-left .tile-content {
   margin-top: 160px;
+  text-align: center;
 }
 html body #container #tile-left .tile-content img {
-  width: 420px;
-  height: 420px;
-  margin-left: 25%;
+  width: 40%;
+  margin-left: 10%;
 }
 html body #container #tile-left .tile-content .description {
   margin-top: 20px;
-  display: inline-block;
   width: 50%;
   vertical-align: top;
   font-size: 25px;
-  margin-left: 16%;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
 html body #container #tile-right {
