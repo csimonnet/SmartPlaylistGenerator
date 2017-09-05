@@ -72,26 +72,25 @@ class DeezerService {
         $albumList = $this->getRandomAlbums($result['data']);
 
         $playlist = new Playlist();
+        $title = date('d/m/Y H:i:s');
+        $playlist->setName($title);
+
         foreach($albumList as $album) {
             $track = $this->getRandomTrackFromAlbum($album);
             if($track !== null) {
                 $playlist->addTrack($this->getRandomTrackFromAlbum($album));
             }
         }
-
-        $this->sendPlaylistToDeezer($playlist);
-
         return $playlist;
     }
 
     protected function sendPlaylistToDeezer($playlist)
     {
         $this->logger->info('sendPlaylistToDeezer');
-        $title = date('d/m/Y H:i:s');
-        $playlist->setName($title);
+
         $url = "http://api.deezer.com/user/me/playlists?access_token=".$this->getAccessToken();
         $parameters = array(
-            "title" => $title
+            "title" => $playlist->getName()
         );
         $result = $this->request($url, "POST", $parameters);
 
