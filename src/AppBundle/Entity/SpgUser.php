@@ -1,15 +1,38 @@
 <?php
-namespace AppBundle\Security\User;
+namespace AppBundle\Entity\User;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Doctrine\ORM\Mapping as ORM;
 
-class DeezerUser implements UserInterface, EquatableInterface
+/**
+ * @ORM\Table(name="spg_users")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ */
+class SpgUser implements UserInterface, EquatableInterface
 {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=25, unique=true)
+     */
     private $username;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
     private $password;
+
+
     private $salt;
+
     private $roles;
+
     private $deezerId;
 
     public function __construct($username, $password, $salt, array $roles, $deezerId)
