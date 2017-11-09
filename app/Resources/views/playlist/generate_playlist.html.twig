@@ -11,14 +11,17 @@
             </div>
             <div id="tile-right">
                 <div class="tile-content">
-                    <div class="playlist-title">
-                        {{ playlist.name }}
-                    </div>
-                    <ol class="playlist">
-                        {% for track in playlist.tracks %}
-                            <li>{{ track.name }}</li>
+                    {{ form_start(form) }}
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name) }}
+
+                    <ul>
+                        {% for track in form.tracks %}
+                            <li>{{ track.vars.data.name }}</li>
                         {% endfor %}
-                    </ol>
+                    </ul>
+                    {{ form_widget(form.save) }}
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
