@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\TrackType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,9 +26,19 @@ class PlaylistController extends Controller
 
          $form = $this->createFormBuilder($generatedPlaylist)
                       ->add('name')
-                      ->add('tracks', CollectionType::class)
+                     ->setAction($this->generateUrl('deezer_playlist_generate'))
+                     ->add('tracks', CollectionType::class, array(
+                            'entry_type' => TrackType::class,
+                            'entry_options' => array('label' => false)
+                      ))
                       ->add('save', SubmitType::class, array('label' => 'Envoyer playlist'))
                       ->getForm();
+
+         if($request->getMethod() == 'POST') {
+             $form->handleRequest($request);
+             $playlist = $form->getData();
+             $deezerService->sendPlaylistToDeezer($playlist);
+         }
 
          return $this->render('playlist/generate_playlist.html.twig', [
             'form' => $form->createView()

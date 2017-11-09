@@ -84,7 +84,7 @@ class DeezerService {
         return $playlist;
     }
 
-    protected function sendPlaylistToDeezer($playlist)
+    public function sendPlaylistToDeezer($playlist)
     {
         $this->logger->info('sendPlaylistToDeezer');
 
