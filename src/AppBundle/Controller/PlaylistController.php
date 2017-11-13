@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\PlaylistParametersType;
 use AppBundle\Form\TrackType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,7 +23,10 @@ class PlaylistController extends Controller
          if(!$deezerService->hasAccessToken()) {
              return $this->redirect($deezerService->getConnectUrl());
          }
-         $generatedPlaylist = $deezerService->generateRandomPlaylist();
+
+         $playlistParameters = $request->query->get('playlist_parameters');
+
+         $generatedPlaylist = $deezerService->generateRandomPlaylist($playlistParameters);
 
          $form = $this->createFormBuilder($generatedPlaylist)
                       ->add('name')
@@ -38,10 +42,31 @@ class PlaylistController extends Controller
              $form->handleRequest($request);
              $playlist = $form->getData();
              $deezerService->sendPlaylistToDeezer($playlist);
+             $deezerService->logout();
          }
 
          return $this->render('playlist/generate_playlist.html.twig', [
             'form' => $form->createView()
          ]);
+     }
+
+    /**
+     * @Route("/playlist/prepare", name="playlist_prepare")
+     */
+     public function preparePlaylistAction(Request $request, DeezerService $deezerService)
+     {
+         if(!$deezerService->hasAccessToken()) {
+             return $this->redirect($deezerService->getConnectUrl());
+         }
+
+         $form = $this->createForm(PlaylistParametersType::class, null, array(
+             'action' => $this->generateUrl('deezer_playlist_generate'),
+             'method' => 'GET'
+         ));
+
+         return $this->render('playlist/prepare_playlist.html.twig', [
+             'form' => $form->createView()
+         ]);
+
      }
 }
