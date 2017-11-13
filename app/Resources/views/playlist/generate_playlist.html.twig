@@ -12,14 +12,13 @@
             <div id="tile-right">
                 <div class="tile-content">
                     {{ form_start(form) }}
-                    {{ form_label(form.name) }}
-                    {{ form_widget(form.name) }}
+                    <div class="playlist-title"> Nom de la playlist : {{ form_widget(form.name) }}</div>
 
-                    <ul>
+                    <ol class="playlist">
                         {% for track in form.tracks %}
                             <li>{{ track.vars.data.name }}</li>
                         {% endfor %}
-                    </ul>
+                    </ol>
                     {{ form_widget(form.save) }}
                     {{ form_end(form) }}
                 </div>
