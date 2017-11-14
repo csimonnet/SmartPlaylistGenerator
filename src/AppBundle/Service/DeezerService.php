@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Album;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Track;
@@ -145,6 +146,7 @@ class DeezerService {
             $index = rand(0, $max);
             $restrictedAlbumsList[] = $albumList[$index];
             unset($albumList[$index]);
+            $albumList = array_values($albumList);
         }
         return $restrictedAlbumsList;
     }

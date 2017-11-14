@@ -108,6 +108,7 @@ html body #container #tile-right .tile-content .playlist-title {
   font-size: 30px;
 }
 html body #container #tile-right .tile-content ol.playlist {
+  list-style-type: decimal;
   text-align: left;
 }
 html body #container #tile-right .tile-content ol.playlist li {

@@ -8,6 +8,18 @@ class Album
 
     protected $deezerId;
 
+    protected $link;
+
+    protected $cover;
+
+    protected $coverSmall;
+
+    protected $tracklist;
+
+    protected $artistId;
+
+    protected $artistName;
+
     public function setName($name)
     {
         $this->name = $name;
