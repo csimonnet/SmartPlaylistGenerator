@@ -121,6 +121,9 @@ html body #container #tile-right .tile-content .playlist-title {
   text-align: left;
   font-size: 30px;
 }
+html body #container #tile-right .tile-content .playlist-title input {
+  width: 98%;
+}
 html body #container #tile-right .tile-content ol.playlist {
   list-style-type: decimal;
   text-align: left;
@@ -129,4 +132,8 @@ html body #container #tile-right .tile-content ol.playlist li {
   padding-top: 5px;
   padding-bottom: 5px;
   border-bottom: 5px solid #a8a8a8;
+}
+html body #container #tile-right .tile-content ol.playlist li .track-description {
+  display: inline-block;
+  width: calc(99% - 56px);
 }

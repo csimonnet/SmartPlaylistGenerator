@@ -29,7 +29,10 @@ class PlaylistController extends Controller
          $generatedPlaylist = $deezerService->generateRandomPlaylist($playlistParameters);
 
          $form = $this->createFormBuilder($generatedPlaylist)
-                      ->add('name')
+                      ->add('name', null, array(
+                          'required' => true,
+                          'empty_data' => date('d/m/Y H:i:s')
+                      ))
                      ->setAction($this->generateUrl('deezer_playlist_generate'))
                      ->add('tracks', CollectionType::class, array(
                             'entry_type' => TrackType::class,

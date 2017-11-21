@@ -6,8 +6,8 @@
             <div id="tile-left">
                 <div class="tile-content">
                     <div class="album-mosaic">
-                        {%  for i in 0..8 %}
-                            <div class="album-cover"><img src="{{ form.tracks[i].vars.data.album.cover }}" /></div>
+                        {%  for i in 0..7 %}
+                            <div class="album-cover"><img src="{{ form.tracks[i].vars.data.album.cover }}" title="{{ form.tracks[i].vars.data.album.name }}"/></div>
                         {%  endfor %}
                     </div>
                     <div class="description">Playlist générée !</div>
@@ -24,16 +24,17 @@
                                 <span class="album-cover">
                                     <img src="{{ track.vars.data.album.coverSmall }}" />
                                 </span>
-                                <span class="track-name">
-                                    {{ track.vars.data.name }}
-                                </span>
-                                <span class="track-album">
-                                    {{ track.vars.data.album.name }}
-                                </span>
-                                <span class="track-artist">
-                                    {{ track.vars.data.album.artistName }}
-                                </span>
-
+                                <div class="track-description">
+                                    <div class="track-name">
+                                        {{ track.vars.data.name }}
+                                    </div>
+                                    <div class="track-album">
+                                        {{ track.vars.data.album.name }}
+                                    </div>
+                                    <div class="track-artist">
+                                        {{ track.vars.data.album.artistName }}
+                                    </div>
+                                </div>
                             </li>
                         {% endfor %}
                     </ol>

@@ -114,6 +114,9 @@ html {
             background-color: #52A5C9;
             text-align: left;
             font-size: 30px;
+            input {
+              width: 98%;
+            }
           }
           ol {
             &.playlist {
@@ -122,7 +125,12 @@ html {
               li {
                 padding-top: 5px;
                 padding-bottom: 5px;
-                border-bottom: 5px solid #a8a8a8
+                border-bottom: 5px solid #a8a8a8;
+
+                .track-description {
+                  display: inline-block;
+                  width: calc(~"99% - 56px")
+                }
               }
             }
           }
