@@ -144,9 +144,17 @@ class DeezerService {
         for($i=0; $i < $tracksNumber; $i++) {
             $max = sizeof($albumList) - 1;
             $index = rand(0, $max);
-            $restrictedAlbumsList[] = $albumList[$index];
+            $deezerAlbum = $albumList[$index];
+            $album = new Album();
+            $album->setArtistId($deezerAlbum['artist']['id']);
+            $album->setArtistName($deezerAlbum['artist']['name']);
+            $album->setName($deezerAlbum['title']);
+            $album->setTracklist($deezerAlbum['tracklist']);
+            $album->setCoverSmall($deezerAlbum['cover_small']);
+            $album->setCover($deezerAlbum['cover_big']);
             unset($albumList[$index]);
             $albumList = array_values($albumList);
+            $restrictedAlbumsList[] = $album;
         }
         return $restrictedAlbumsList;
     }
@@ -156,9 +164,9 @@ class DeezerService {
      * @param $album
      * @return Track|null
      */
-    protected function getRandomTrackFromAlbum($album)
+    protected function getRandomTrackFromAlbum(Album $album)
     {
-        $url = $album["tracklist"]."?access_token=".$this->getAccessToken();
+        $url = $album->getTracklist()."?access_token=".$this->getAccessToken();
         $this->logger->info($url);
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -172,6 +180,7 @@ class DeezerService {
             $dataTrack =  $tracks['data'][rand(0,$max)];
             $track->setDeezerId($dataTrack['id']);
             $track->setName($dataTrack['title']);
+            $track->setAlbum($album);
             return $track;
         }
         return null;

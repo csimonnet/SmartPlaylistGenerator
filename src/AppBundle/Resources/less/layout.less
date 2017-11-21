@@ -47,6 +47,7 @@ html {
         background-color: black;
         color: white;
         vertical-align: middle;
+        overflow-y: hidden;
         .tile-content {
           margin-top: 160px;
           text-align: center;
@@ -63,6 +64,18 @@ html {
             margin-right: auto;
             text-align: center;
           }
+          .album-mosaic {
+            width: 90%;
+            height: 70vh;
+            margin-left: 5%;
+            .album-cover {
+              display: inline-block;
+              img {
+                margin: 0;
+                width: 200px;
+              }
+            }
+          }
         }
       }
 
@@ -75,6 +88,7 @@ html {
         font-size: 21px;
         text-align: center;
         background-color: #f7f7f7;
+        overflow-y: scroll;
         .tile-content {
           margin-top: 150px;
           width: 80%;

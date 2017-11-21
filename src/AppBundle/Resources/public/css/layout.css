@@ -54,6 +54,7 @@ html body #container #tile-left {
   background-color: black;
   color: white;
   vertical-align: middle;
+  overflow-y: hidden;
 }
 html body #container #tile-left .tile-content {
   margin-top: 160px;
@@ -72,6 +73,18 @@ html body #container #tile-left .tile-content .description {
   margin-right: auto;
   text-align: center;
 }
+html body #container #tile-left .tile-content .album-mosaic {
+  width: 90%;
+  height: 70vh;
+  margin-left: 5%;
+}
+html body #container #tile-left .tile-content .album-mosaic .album-cover {
+  display: inline-block;
+}
+html body #container #tile-left .tile-content .album-mosaic .album-cover img {
+  margin: 0;
+  width: 200px;
+}
 html body #container #tile-right {
   vertical-align: top;
   width: 50%;
@@ -81,6 +94,7 @@ html body #container #tile-right {
   font-size: 21px;
   text-align: center;
   background-color: #f7f7f7;
+  overflow-y: scroll;
 }
 html body #container #tile-right .tile-content {
   margin-top: 150px;

@@ -5,20 +5,39 @@
         <div id="container">
             <div id="tile-left">
                 <div class="tile-content">
-                    <img src="{{asset('bundles/app/images/logo.png')}}" />
-                    <div class="description">Playlist générée ! </div>
+                    <div class="album-mosaic">
+                        {%  for i in 0..8 %}
+                            <div class="album-cover"><img src="{{ form.tracks[i].vars.data.album.cover }}" /></div>
+                        {%  endfor %}
+                    </div>
+                    <div class="description">Playlist générée !</div>
                 </div>
             </div>
             <div id="tile-right">
                 <div class="tile-content">
                     {{ form_start(form) }}
-                    <div class="playlist-title"> Nom de la playlist : {{ form_widget(form.name) }}</div>
+                    <div class="playlist-title"> {{ form_widget(form.name) }}</div>
 
                     <ol class="playlist">
                         {% for track in form.tracks %}
-                            <li>{{ track.vars.data.name }}</li>
+                            <li>
+                                <span class="album-cover">
+                                    <img src="{{ track.vars.data.album.coverSmall }}" />
+                                </span>
+                                <span class="track-name">
+                                    {{ track.vars.data.name }}
+                                </span>
+                                <span class="track-album">
+                                    {{ track.vars.data.album.name }}
+                                </span>
+                                <span class="track-artist">
+                                    {{ track.vars.data.album.artistName }}
+                                </span>
+
+                            </li>
                         {% endfor %}
                     </ol>
+                    {{ form_widget(form.tracks) }}
                     {{ form_widget(form.save) }}
                     {{ form_end(form) }}
                 </div>
