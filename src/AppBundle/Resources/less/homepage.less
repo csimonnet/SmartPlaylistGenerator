@@ -4,41 +4,53 @@
 .homepage {
   .tile-left {
     .tile-content {
+       width: 90%;
+       margin-left: auto;
+       margin-top: 130px;
+        .featured {
+          .featured-description {
+            margin-bottom: 10px;
+            padding: 5px;
+            .featured-cover {
+              display: inline-block;
+              width: 200px;
 
-      margin-top: 160px;
-      text-align: center;
+                img {
+                  border: 1px solid @color-border;
+                  width: 100%;
+                }
+            }
+            .featured-details {
+              display: inline-block;
+              width: 55%;
+              margin-left: 10px;
 
-      img {
-        margin-left: 10%;
-        width: 40%;
-      }
+              .featured-album-author {
+                font-size: 10px;
+                font-style: italic;
+                margin-bottom: 2px;
+              }
 
-      .description {
-        font-size: 25px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-        text-align: center;
-        vertical-align: top;
-        width: 50%;
-      }
+              .featured-album-name {
+                font-size: 30px;
+                margin-bottom: 1px;
+              }
 
-      .album-mosaic {
-        height: 70vh;
-        margin-left: 5%;
-        width: 90%;
+              .featured-album-artist {
+                font-size: 20px;
+                font-style: oblique;
+                margin-bottom: 5px;
+                border-bottom: 2px solid;
+                padding-top: 2px;
+                padding-bottom: 2px;
+              }
 
-        .album-cover {
-          display: inline-block;
-
-          img {
-            margin: 0px;
-            width: 200px;
+              .featured-description {
+                padding: 0px;
+              }
+            }
           }
-
         }
-
-      }
     }
   }
 
@@ -46,9 +58,9 @@
     .tile-content {
       margin-left: auto;
       margin-right: auto;
-      margin-top: 150px;
+      margin-top: 130px;
       width: 80%;
-
+      text-align: initial;
       .generate {
         a {
           background-color: @color-secondary-1-3;

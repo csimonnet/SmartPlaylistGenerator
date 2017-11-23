@@ -1,11 +1,11 @@
 {% extends 'two-tiles.html.twig' %}
 
 {% block left %}
-    <img src="{{asset('bundles/app/images/logo.png')}}" />
-    <div class="description">Le "Smart Playlist Generator" vous permet de générer une playlist à partir de vos albums Deezer favoris !</div>
+    {{ render(controller('AppBundle:Featured:featuredPanel')) }}
 {% endblock %}
 
 {% block right %}
+    <div class="description">Le "Smart Playlist Generator" vous permet de générer une playlist à partir de vos albums Deezer favoris !</div>
     <div class="connect-hint">Cliquez ci-dessous pour préparer la génération de votre playlist.</div>
     <div class="generate">
         <a href="{{ deezer_url }}"> Se connecter </a>

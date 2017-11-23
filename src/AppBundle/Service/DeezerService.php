@@ -187,6 +187,20 @@ class DeezerService {
 
     }
 
+    public function getAlbumByDeezerId($albumDeezerId)
+    {
+        $url = 'http://api.deezer.com/album/'.$albumDeezerId;
+        $albumData = $this->request($url);
+        $album = new Album();
+        $album->setArtistId($albumData['artist']['id']);
+        $album->setArtistName($albumData['artist']['name']);
+        $album->setName($albumData['title']);
+        $album->setTracklist($albumData['tracklist']);
+        $album->setCoverSmall($albumData['cover_small']);
+        $album->setCover($albumData['cover_big']);
+        return $album;
+    }
+
     protected function request($url, $method = "GET", $parameters = [])
     {
         $ch = curl_init($url);
