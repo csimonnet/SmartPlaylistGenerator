@@ -112,6 +112,7 @@ html {
           .playlist-title {
             padding: 5px;
             background-color: #52A5C9;
+            border: 2px solid #a8a8a8;
             text-align: left;
             font-size: 30px;
             input {
@@ -125,12 +126,24 @@ html {
               li {
                 padding-top: 5px;
                 padding-bottom: 5px;
-                border-bottom: 5px solid #a8a8a8;
-
+                border-bottom: 2px solid #a8a8a8;
+                vertical-align: middle;
                 .track-description {
                   display: inline-block;
-                  width: calc(~"99% - 56px")
+                  width: calc(~"99% - 56px");
+                  .track-album {
+                    font-size: 15px;
+                    display: inline-block;
+
+                  }
+                  .track-artist {
+                    font-size: 15px;
+                    display: inline-block;
+                    border-left: 1px solid #a8a8a8;
+                    padding-left: 5px;
+                  }
                 }
+
               }
             }
           }
