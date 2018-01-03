@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div id="wrapper">
+    <div class="main-container">
+        <div class="tile-left">
+            <div class="tile-content {{ app.request.attributes.get("_route") }}">
+                {% block left %}{% endblock %}
+            </div>
+        </div>
+        <div class="tile-right">
+            <div class="tile-content" class="{{ app.request.attributes.get("_route") }}">
+                {% block right %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
