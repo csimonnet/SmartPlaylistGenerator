@@ -2,14 +2,14 @@
 
 {% block body %}
 <div id="wrapper">
-    <div class="main-container">
+    <div class="main-container  {{ app.request.attributes.get("_route") }}">
         <div class="tile-left">
-            <div class="tile-content {{ app.request.attributes.get("_route") }}">
+            <div class="tile-content">
                 {% block left %}{% endblock %}
             </div>
         </div>
         <div class="tile-right">
-            <div class="tile-content" class="{{ app.request.attributes.get("_route") }}">
+            <div class="tile-content">
                 {% block right %}{% endblock %}
             </div>
         </div>
