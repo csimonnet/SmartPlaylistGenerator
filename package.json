@@ -11,7 +11,8 @@
     "gulp-less": "~3.4.0",
     "gulp-concat": "~2.6.1",
     "gulp-rename": "~1.2.2",
-    "gulp-clean-css": "~3.9.2"
+    "gulp-clean-css": "~3.9.2",
+    "gulp-lesshint": "~4.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

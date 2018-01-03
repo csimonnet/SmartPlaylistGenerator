@@ -1,8 +1,9 @@
 var gulp = require('gulp');
 var less = require('gulp-less');
-var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var cleanCss = require('gulp-clean-css');
+const lesshint = require('gulp-lesshint');
+
 
 
 var paths = {
@@ -14,6 +15,9 @@ var paths = {
 
 function styles() {
     return gulp.src(paths.styles.src)
+        .pipe(lesshint())
+        .pipe(lesshint.reporter()) // Leave empty to use the default, "stylish"
+        .pipe(lesshint.failOnError())
         .pipe(less())
         // pass in options to the stream
         .pipe(cleanCss())
