@@ -1,0 +1,29 @@
+{
+  "name": "smart-playlist-generator",
+  "version": "1.0.0",
+  "description": "Générateur de playlist",
+  "main": "home",
+  "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {
+    "gulp": "~3.9.1",
+    "gulp-less": "~3.4.0",
+    "gulp-concat": "~2.6.1",
+    "gulp-rename": "~1.2.2",
+    "gulp-clean-css": "~3.9.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csimonnet/SmartPlaylistGenerator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csimonnet/SmartPlaylistGenerator/issues"
+  },
+  "homepage": "https://github.com/csimonnet/SmartPlaylistGenerator#readme"
+}
