@@ -8,7 +8,7 @@ const lesshint = require('gulp-lesshint');
 
 var paths = {
     styles: {
-        src: 'src/AppBundle/Resources/less/*.less',
+        src: 'src/AppBundle/Resources/less/main.less',
         dest: 'src/AppBundle/Resources/public/css/'
     }
 };
