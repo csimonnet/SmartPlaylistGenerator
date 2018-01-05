@@ -1,48 +1,39 @@
-{% extends 'base.html.twig' %}
+{% extends 'two-tiles.html.twig' %}
 
-{% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div id="tile-left">
-                <div class="tile-content">
-                    <div class="album-mosaic">
-                        {%  for i in 0..7 %}
-                            <div class="album-cover"><img src="{{ form.tracks[i].vars.data.album.cover }}" title="{{ form.tracks[i].vars.data.album.name }}"/></div>
-                        {%  endfor %}
-                    </div>
-                    <div class="description">Playlist générée !</div>
-                </div>
-            </div>
-            <div id="tile-right">
-                <div class="tile-content">
-                    {{ form_start(form) }}
-                    <div class="playlist-title"> {{ form_widget(form.name) }}</div>
+{% block left %}
+    <div class="album-mosaic">
+        {%  for i in 0..7 %}
+            <div class="album-cover"><img src="{{ form.tracks[i].vars.data.album.cover }}" title="{{ form.tracks[i].vars.data.album.name }}"/></div>
+        {%  endfor %}
+    </div>
+    <div class="description">Playlist générée !</div>
+{% endblock %}
 
-                    <ol class="playlist">
-                        {% for track in form.tracks %}
-                            <li>
+{% block right %}
+    {{ form_start(form) }}
+    <div class="playlist-title"> {{ form_widget(form.name) }}</div>
+
+    <ol class="playlist">
+        {% for track in form.tracks %}
+            <li>
                                 <span class="album-cover">
                                     <img src="{{ track.vars.data.album.coverSmall }}" />
                                 </span>
-                                <div class="track-description">
-                                    <div class="track-name">
-                                        {{ track.vars.data.name }}
-                                    </div>
-                                    <div class="track-album">
-                                        {{ track.vars.data.album.name }}
-                                    </div>
-                                    <div class="track-artist">
-                                        {{ track.vars.data.album.artistName }}
-                                    </div>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ol>
-                    {{ form_widget(form.tracks) }}
-                    {{ form_widget(form.save) }}
-                    {{ form_end(form) }}
+                <div class="track-description">
+                    <div class="track-name">
+                        {{ track.vars.data.name }}
+                    </div>
+                    <div class="track-album">
+                        {{ track.vars.data.album.name }}
+                    </div>
+                    <div class="track-artist">
+                        {{ track.vars.data.album.artistName }}
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
+            </li>
+        {% endfor %}
+    </ol>
+    {{ form_widget(form.tracks) }}
+    {{ form_widget(form.save) }}
+    {{ form_end(form) }}
 {% endblock %}

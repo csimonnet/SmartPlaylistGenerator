@@ -1,0 +1,76 @@
+.deezer_playlist_generate {
+  .tile-left {
+    .tile-content {
+
+      margin-top: 160px;
+      text-align: center;
+
+      img {
+        margin-left: 10%;
+        width: 40%;
+      }
+
+      .description {
+        font-size: 25px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+        text-align: center;
+        vertical-align: top;
+        width: 50%;
+      }
+
+      .album-mosaic {
+        height: 70vh;
+        margin-left: 5%;
+        width: 90%;
+
+        .album-cover {
+          display: inline-block;
+
+          img {
+            margin: 0px;
+            width: 200px;
+          }
+
+        }
+
+      }
+    }
+  }
+
+  .tile-right {
+    .tile-content {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 150px;
+      width: 80%;
+
+        .playlist-title {
+          padding: 5px;
+          background-color: #52A5C9;
+          text-align: left;
+          font-size: 30px;
+          input {
+            width: 98%;
+          }
+        }
+        ol {
+          &.playlist {
+            list-style-type:decimal;
+            text-align: left;
+            li {
+              padding-top: 5px;
+              padding-bottom: 5px;
+              border-bottom: 5px solid #a8a8a8;
+
+              .track-description {
+                display: inline-block;
+                width: calc(~"99% - 56px")
+              }
+            }
+          }
+        }
+    }
+  }
+}

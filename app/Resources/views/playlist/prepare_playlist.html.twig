@@ -1,21 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'two-tiles.html.twig' %}
 
-{% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div id="tile-left">
-                <div class="tile-content">
-                    <img src="{{asset('bundles/app/images/logo.png')}}" />
-                    <div class="description">Préparation de la génération</div>
-                </div>
-            </div>
-            <div id="tile-right">
-                <div class="tile-content">
-                    {{ form_start(form) }}
-                    {{ form_widget(form.save) }}
-                    {{ form_end(form) }}
-                </div>
-            </div>
-        </div>
-    </div>
+{% block left %}
+    <img src="{{asset('bundles/app/images/logo.png')}}" />
+    <div class="description">Préparation de la génération</div>
+{% endblock %}
+
+{% block right %}
+    {{ form_start(form) }}
+    {{ form_widget(form.save) }}
+    {{ form_end(form) }}
 {% endblock %}
