@@ -1,0 +1,16 @@
+<div class="featured">
+    <div class="featured-description">
+        <div class="featured-cover">
+            <img src="{{ album.cover }}" />
+        </div>
+        <div class="featured-details">
+            <div class="featured-album-author">Recommandé cette semaine par <a href="https://twitter.com/chsimonnet" target="_blank">@chsimonnet</a></div>
+            <div class="featured-album-name">{{ album.name }}</div>
+            <div class="featured-album-artist">de {{ album.artistName }}</div>
+            <div class="featured-description">{{ description }}</div>
+        </div>
+    </div>
+    <div class="featured-video">
+        <iframe width="467" height="263" src="{{ video }}" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+    </div>
+</div>
