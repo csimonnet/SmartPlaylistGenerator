@@ -2,6 +2,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Album;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Track;
@@ -10,6 +11,15 @@ use AppBundle\Entity\Track;
 * Manages Deezer URLs
 */
 class DeezerService {
+
+    const ACCESS_TOKEN_URL = 'https://connect.deezer.com/oauth/auth.php';
+    const CONNECT_URL = 'https://connect.deezer.com/oauth/auth.php';
+    const USER_ALBUMS_URL = 'http://api.deezer.com/user/me/albums';
+    const USER_PLAYLISTS_URL = 'http://api.deezer.com/user/me/playlists';
+    const ALBUM_URL = 'http://api.deezer.com/album';
+    const PLAYLIST_URL = 'http://api.deezer.com/playlist';
+    const ALBUMS_MAX = '300';
+    const TRACKS_MAX_TRIES = 5;
 
     protected $deezerAppId;
     protected $deezerAppSecret;
@@ -38,7 +48,7 @@ class DeezerService {
             'redirect_uri' => $this->router->generate('deezer_authorize', array(), UrlGeneratorInterface::ABSOLUTE_URL),
             'perms' => 'basic, emails, manage_library'
         ];
-        return 'https://connect.deezer.com/oauth/auth.php?'.http_build_query($parameters);
+        return self::CONNECT_URL.'?'.http_build_query($parameters);
     }
 
     /**
@@ -61,8 +71,12 @@ class DeezerService {
             'code'   => $code,
             'output' => 'json'
         ];
-        $url = 'https://connect.deezer.com/oauth/access_token.php?'.http_build_query($parameters);
+        $url = self::ACCESS_TOKEN_URL.'?'.http_build_query($parameters);
         $result = $this->request($url);
+        if(empty($result['access_token'])) {
+            throw new AccessDeniedHttpException('Access token could not be retrieved');
+
+        }
         $this->session->set('deezer_access_token', $result['access_token']);
     }
 
@@ -71,20 +85,13 @@ class DeezerService {
         return $this->session->get('deezer_access_token');
     }
 
-    public function getUserDeezerId()
-    {
-        $url = "https://api.deezer.com/user/me?access_token=".$this->getAccessToken();
-        $result = $this->request($url);
-        return $result["id"];
-    }
-
     /**
      * Generate a playlist from favorite albums, randomly.
      * @return Playlist
      */
     public function generateRandomPlaylist($parameters)
     {
-        $url = "http://api.deezer.com/user/me/albums?access_token=".$this->getAccessToken()."&limit=300";
+        $url = self::USER_ALBUMS_URL."?access_token=".$this->getAccessToken()."&limit=".self::ALBUMS_MAX;
         $result = $this->request($url);
         $albumList = $this->getRandomAlbums($result['data'], $parameters['tracks_number']);
 
@@ -93,9 +100,14 @@ class DeezerService {
         $playlist->setName($title);
 
         foreach($albumList as $album) {
-            $track = $this->getRandomTrackFromAlbum($album);
-            if($track !== null) {
-                $playlist->addTrack($this->getRandomTrackFromAlbum($album));
+            $tried = 0;
+            $track = null;
+            while(empty($track) && $tried <= self::TRACKS_MAX_TRIES){
+                $tried++;
+                $track = $this->getRandomTrackFromAlbum($album);
+                if($track !== null) {
+                    $playlist->addTrack($this->getRandomTrackFromAlbum($album));
+                }
             }
         }
         return $playlist;
@@ -107,23 +119,26 @@ class DeezerService {
      */
     public function sendPlaylistToDeezer($playlist)
     {
-        $this->logger->info('sendPlaylistToDeezer');
-
-        $url = "http://api.deezer.com/user/me/playlists?access_token=".$this->getAccessToken();
+        $url = self::USER_PLAYLISTS_URL."?access_token=".$this->getAccessToken();
         $parameters = array(
             "title" => $playlist->getName()
         );
         $result = $this->request($url, "POST", $parameters);
-
+        if(!empty($result["error"])) {
+            throw new Exception("An error has occurred and playlist was not sent to Deezer.");
+        }
         $tracksId = array_map(function($element) {
             return $element->getDeezerId();
         }, $playlist->getTracks());
 
-        $url = "http://api.deezer.com/playlist/".$result['id']."/tracks?access_token=".$this->getAccessToken();
+        $url = self::PLAYLIST_URL."/".$result['id']."/tracks?access_token=".$this->getAccessToken();
         $parameters = array(
             "songs" => implode(",", $tracksId)
         );
-        $this->request($url, "POST", $parameters);
+        $result = $this->request($url, "POST", $parameters);
+        if(!empty($result["error"])) {
+            throw new Exception("An error has occurred and playlist was not sent to Deezer.");
+        }
     }
 
     public function logout()
@@ -167,13 +182,7 @@ class DeezerService {
     protected function getRandomTrackFromAlbum(Album $album)
     {
         $url = $album->getTracklist()."?access_token=".$this->getAccessToken();
-        $this->logger->info($url);
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $tracks = json_decode(curl_exec($ch), true);
-        curl_close($ch);
-        $this->logger->info(json_encode($tracks));
+        $tracks = json_decode($this->requestAccessToken($url), true);
         if(array_key_exists('data', $tracks)) {
             $track = new Track();
             $max = sizeof($tracks['data']) - 1;
@@ -189,7 +198,7 @@ class DeezerService {
 
     public function getAlbumByDeezerId($albumDeezerId)
     {
-        $url = 'http://api.deezer.com/album/'.$albumDeezerId;
+        $url = self::ALBUM_URL.'/'.$albumDeezerId;
         $albumData = $this->request($url);
         $album = new Album();
         $album->setArtistId($albumData['artist']['id']);
