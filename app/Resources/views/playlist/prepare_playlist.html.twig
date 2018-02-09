@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block right %}
+    {% for message in app.flashes('notice') %}
+        <div class="alert alert-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="title">Préparez votre playlist !</div>
     <div class="description">Choisissez ci-dessous la manière dont vous voulez générer votre playlist !</div>
     {{ form_start(form) }}
