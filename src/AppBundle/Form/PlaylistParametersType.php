@@ -13,7 +13,7 @@ class PlaylistParametersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('tracks_number', NumberType::class)
+                ->add('tracks_number', NumberType::class, array('label' => 'Nombre de pistes'))
                 ->add('save', SubmitType::class, array('label' => 'C\'est parti ! '))
         ;
     }
