@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block right %}
+    {% for message in app.flashes('notice') %}
+        <div class="alert alert-notice">
+            {{ message | raw }}
+        </div>
+    {% endfor %}
     <div class="description">Le "Smart Playlist Generator" vous permet de générer une playlist à partir de vos albums Deezer favoris !</div>
     <div class="connect-hint">Cliquez ci-dessous pour préparer la génération de votre playlist.</div>
     <div class="generate">

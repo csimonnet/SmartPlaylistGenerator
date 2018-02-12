@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\DeezerService;
 
@@ -11,8 +12,14 @@ class UserController extends Controller
 {
     public function userPanelAction(Request $request, DeezerService $deezerService)
     {
+        $user = null;
+        try {
+            $user = $deezerService->getCurrentUserInformations();
+        } catch (AccessDeniedException $e) {
+
+        }
         return $this->render('user/connection_panel.html.twig', [
-            'user' => $deezerService->getCurrentUserInformations(),
+            'user' => $user,
             'connection_url' => $deezerService->getConnectUrl()
         ]);
     }

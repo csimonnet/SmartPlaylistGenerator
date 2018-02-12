@@ -16,9 +16,9 @@
     <ol class="playlist">
         {% for track in form.tracks %}
             <li>
-                                <span class="album-cover">
-                                    <img src="{{ track.vars.data.album.coverSmall }}" />
-                                </span>
+                <span class="album-cover">
+                    <img src="{{ track.vars.data.album.coverSmall }}" />
+                </span>
                 <div class="track-description">
                     <div class="track-name">
                         {{ track.vars.data.name }}

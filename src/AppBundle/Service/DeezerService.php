@@ -2,7 +2,9 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Album;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Track;
@@ -227,6 +229,9 @@ class DeezerService {
         }
         $response = json_decode(curl_exec($ch), true);
         curl_close($ch);
+        if(array_key_exists('error', $response) && $response['error']['type'] == 'OAuthException' && $response['error']['code'] == 300 ) {
+            throw new AccessDeniedException('Token Expired');
+        }
         return $response;
     }
 }
