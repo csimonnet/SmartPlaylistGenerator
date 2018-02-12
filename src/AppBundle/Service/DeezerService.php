@@ -21,6 +21,7 @@ class DeezerService {
     const ALBUM_URL = 'http://api.deezer.com/album';
     const PLAYLIST_URL = 'http://api.deezer.com/playlist';
     const ALBUMS_MAX = '300';
+    const PLAYLIST_MAX_TRACK = 30;
     const TRACKS_MAX_TRIES = 5;
 
     protected $deezerAppId;
@@ -93,6 +94,9 @@ class DeezerService {
      */
     public function generateRandomPlaylist($parameters)
     {
+        if($parameters['tracks_number'] > self::PLAYLIST_MAX_TRACK) {
+            throw new \Exception('Ouh là, vous voulez beaucoup trop de tracks dans votre playlist ! (et vous avez un peu triché)');
+        }
         $url = self::USER_ALBUMS_URL."?access_token=".$this->getAccessToken()."&limit=".self::ALBUMS_MAX;
         $result = $this->request($url);
         $albumList = $this->getRandomAlbums($result['data'], $parameters['tracks_number']);
