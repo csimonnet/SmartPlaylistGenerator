@@ -8,7 +8,7 @@
 {% block right %}
     {% for message in app.flashes('notice') %}
         <div class="alert alert-notice">
-            {{ message }}
+            {{ message | raw }}
         </div>
     {% endfor %}
     <div class="title">Préparez votre playlist !</div>

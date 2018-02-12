@@ -12,7 +12,7 @@ use AppBundle\Entity\Track;
 */
 class DeezerService {
 
-    const ACCESS_TOKEN_URL = 'https://connect.deezer.com/oauth/auth.php';
+    const ACCESS_TOKEN_URL = 'https://connect.deezer.com/oauth/access_token.php';
     const CONNECT_URL = 'https://connect.deezer.com/oauth/auth.php';
     const USER_ALBUMS_URL = 'http://api.deezer.com/user/me/albums';
     const USER_PLAYLISTS_URL = 'http://api.deezer.com/user/me/playlists';
@@ -119,26 +119,22 @@ class DeezerService {
      */
     public function sendPlaylistToDeezer($playlist)
     {
-        $url = self::USER_PLAYLISTS_URL."?access_token=".$this->getAccessToken();
+        $this->logger->info('sendPlaylistToDeezer');
+
+        $url = "http://api.deezer.com/user/me/playlists?access_token=".$this->getAccessToken();
         $parameters = array(
             "title" => $playlist->getName()
         );
         $result = $this->request($url, "POST", $parameters);
-        if(!empty($result["error"])) {
-            throw new Exception("An error has occurred and playlist was not sent to Deezer.");
-        }
+        $playlist->setDeezerId($result['id']);
         $tracksId = array_map(function($element) {
             return $element->getDeezerId();
         }, $playlist->getTracks());
-
-        $url = self::PLAYLIST_URL."/".$result['id']."/tracks?access_token=".$this->getAccessToken();
+        $url = "http://api.deezer.com/playlist/".$result['id']."/tracks?access_token=".$this->getAccessToken();
         $parameters = array(
             "songs" => implode(",", $tracksId)
         );
-        $result = $this->request($url, "POST", $parameters);
-        if(!empty($result["error"])) {
-            throw new Exception("An error has occurred and playlist was not sent to Deezer.");
-        }
+        $this->request($url, "POST", $parameters);
     }
 
     public function logout()
@@ -182,7 +178,7 @@ class DeezerService {
     protected function getRandomTrackFromAlbum(Album $album)
     {
         $url = $album->getTracklist()."?access_token=".$this->getAccessToken();
-        $tracks = json_decode($this->requestAccessToken($url), true);
+        $tracks = $this->request($url);
         if(array_key_exists('data', $tracks)) {
             $track = new Track();
             $max = sizeof($tracks['data']) - 1;

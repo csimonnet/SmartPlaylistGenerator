@@ -19,11 +19,7 @@ class DeezerController extends Controller
      {
         $code = $request->query->get('code');
 
-        try {
-            $deezerService->requestAccessToken($code);
-        } catch(\Exception $e) {
-            
-        }
+        $deezerService->requestAccessToken($code);
         
         return $this->redirect($this->get('router')->generate('playlist_prepare', array(), true));
      }
