@@ -1,0 +1,5 @@
+{% if user != null %}
+    Bonjour {{ user.name }} !<a href="{{ path('user_logout') }}">Déconnexion</a>
+{% else %}
+    <a href="{{ connection_url }}">Se connecter avec Deezer</a>
+{% endif %}

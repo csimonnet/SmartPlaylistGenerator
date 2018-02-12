@@ -142,6 +142,14 @@ class DeezerService {
         $this->session->set('deezer_access_token', null);
     }
 
+    public function getCurrentUserInformations()
+    {
+        if($this->hasAccessToken()) {
+            return $this->request('https://api.deezer.com/user/me?access_token='.$this->getAccessToken());
+        }
+        return null;
+    }
+
     /**
      * get some albums from user favorites albums
      * @param $albumList

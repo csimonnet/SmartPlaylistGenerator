@@ -9,21 +9,26 @@ use AppBundle\Service\DeezerService;
 
 class UserController extends Controller
 {
-    /**
-     * @Route("/user/register/deezer", name="deezer_register")
-     * The route used to create a user via his / her Deezer account.
-     */
-    public function deezerRegisterAction(Request $request, DeezerService $deezerService)
+    public function userPanelAction(Request $request, DeezerService $deezerService)
     {
+        return $this->render('user/connection_panel.html.twig', [
+            'user' => $deezerService->getCurrentUserInformations(),
+            'connection_url' => $deezerService->getConnectUrl()
+        ]);
     }
 
     /**
-     * @Route("/user/login/deezer", name="deezer_login")
-     * Route that will try to authenticate the user from Deezer. If the user does not exist,
-     * should redirect user to register and authenticate new user.
+     * @Route("/logout", name="user_logout")
      */
-    public function deezerLoginAction(Request $request, DeezerService $deezerService)
+    public function logoutAction(Request $request, DeezerService $deezerService)
+    {
+        $deezerService->logout();
+        return $this->redirectToRoute('homepage');
+    }
+
+    public function loginAction(Request $request)
     {
 
     }
+
 }
