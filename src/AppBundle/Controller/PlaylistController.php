@@ -65,7 +65,8 @@ class PlaylistController extends Controller
              }
 
              return $this->render('playlist/generate_playlist.html.twig', [
-                 'form' => $form->createView()
+                 'form' => $form->createView(),
+                 'max_tracks' => sizeof($form->getData()->getTracks()) <= 5 ? sizeof($form->getData()->getTracks()) - 1 : 7
              ]);
          } catch (AccessDeniedException $e) {
              $session->getFlashBag()->add('notice', 'Vous avez été déconnecté subitement :\'( Essayez de vous reconnecter pour générer votre playlist !' );

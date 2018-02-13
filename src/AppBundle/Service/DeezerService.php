@@ -112,7 +112,13 @@ class DeezerService {
                 $tried++;
                 $track = $this->getRandomTrackFromAlbum($album);
                 if($track !== null) {
-                    $playlist->addTrack($this->getRandomTrackFromAlbum($album));
+                    $playlist->addTrack($track);
+                } else {
+                    $albumTryAgain = $this->getRandomAlbums($result['data'], 1);
+                    $track = $this->getRandomTrackFromAlbum($albumTryAgain[0]);
+                    if($track !== null) {
+                        $playlist->addTrack($track);
+                    }
                 }
             }
         }
@@ -232,8 +238,13 @@ class DeezerService {
             curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($parameters));
         }
         $response = json_decode(curl_exec($ch), true);
+        if(!$response) {
+            $message = curl_error($ch);
+            curl_close($ch);
+            throw new AccessDeniedException($message);
+        }
         curl_close($ch);
-        if(array_key_exists('error', $response) && $response['error']['type'] == 'OAuthException' && $response['error']['code'] == 300 ) {
+        if(is_array($response) && array_key_exists('error', $response) && $response['error']['type'] == 'OAuthException' && $response['error']['code'] == 300 ) {
             throw new AccessDeniedException('Token Expired');
         }
         return $response;
