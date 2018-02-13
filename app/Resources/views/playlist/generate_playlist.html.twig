@@ -1,12 +1,12 @@
 {% extends 'two-tiles.html.twig' %}
 
 {% block left %}
+    <div class="description">Playlist générée ! Vous pouvez modifier le nom de votre playlist. Une fois qu'elle vous plaît, cliquez sur "Envoyer playlist" en-dessous de celle-ci pour la sauvegarder sur Deezer !</div>
     <div class="album-mosaic">
         {%  for i in 0..7 %}
             <div class="album-cover"><img src="{{ form.tracks[i].vars.data.album.cover }}" title="{{ form.tracks[i].vars.data.album.name }}"/></div>
         {%  endfor %}
     </div>
-    <div class="description">Playlist générée !</div>
 {% endblock %}
 
 {% block right %}

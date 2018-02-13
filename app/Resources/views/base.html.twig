@@ -14,8 +14,8 @@
             <div class="header-content">
                 <div class="logo"></div>
                 <h1>Smart Playlist Generator</h1>
+                {{ render(controller('AppBundle:User:userPanel')) }}
             </div>
-            {{ render(controller('AppBundle:User:userPanel')) }}
         </header>
         <div id="content">
             {% block body %}{% endblock %}

@@ -11,17 +11,19 @@
       }
 
       .description {
-        font-size: 25px;
+        font-size: 15px;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 20px;
         text-align: center;
-        vertical-align: top;
-        width: 50%;
+        width: 85%;
+        background-color: @color-secondary-2-1;
+        color: @background-light;
+        padding: 10px;
+        margin-bottom: 50px;
+        font-style: oblique;
       }
 
       .album-mosaic {
-        height: 70vh;
         margin-left: 5%;
         width: 90%;
 
@@ -52,12 +54,13 @@
           text-align: left;
           font-size: 30px;
           input {
-            width: 98%;
+            width: 99%;
+            font-size: 25px;
+            height: 50px;
           }
         }
         ol {
           &.playlist {
-            list-style-type:decimal;
             text-align: left;
             li {
               padding-top: 5px;
@@ -66,7 +69,21 @@
 
               .track-description {
                 display: inline-block;
-                width: calc(~"99% - 56px")
+                width: calc(~"99% - 56px");
+              }
+              .track-name {
+                margin-bottom: 2px;
+                border-bottom: 1px solid #a8a8a8;
+              }
+              .track-album {
+                font-size: 12px;
+                font-style: oblique;
+                padding: 1px;
+              }
+              .track-artist {
+                font-size: 12px;
+                font-style: oblique;
+                padding: 1px;
               }
             }
           }

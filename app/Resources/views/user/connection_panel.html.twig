@@ -1,5 +1,7 @@
-{% if user != null %}
-    Bonjour {{ user.name }} !<a href="{{ path('user_logout') }}">Déconnexion</a>
+<div class="user-panel">
+    {% if user != null %}
+        <span class="user-welcome">Bonjour {{ user.name }} !</span><a class="button-secondary" href="{{ path('user_logout') }}">Déconnexion</a>
 {% else %}
-    <a href="{{ connection_url }}">Se connecter avec Deezer</a>
+    <a href="{{ connection_url }}" class="button-secondary">Se connecter avec Deezer</a>
 {% endif %}
+</div>
