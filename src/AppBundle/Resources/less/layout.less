@@ -53,6 +53,10 @@ html {
       padding: 5px;
       margin-bottom: 15px;
       font-size: 15px;
+      color: @background-dark;
+      a {
+        color: @background-dark;
+      }
     }
 
     .main-container {
@@ -97,6 +101,18 @@ html {
       }
     }
     a {
+      color: @background-light;
+      font-style: normal;
+      text-decoration: none;
+      &:visited{
+        color: inherit;
+      }
+      &:hover{
+        color: inherit;
+      }
+      &:active {
+        color: inherit;
+      }
       &.button-secondary {
         background-color: @color-secondary-1-1;
         border: 0px;

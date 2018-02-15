@@ -17,6 +17,7 @@ class DeezerService {
     const ACCESS_TOKEN_URL = 'https://connect.deezer.com/oauth/access_token.php';
     const CONNECT_URL = 'https://connect.deezer.com/oauth/auth.php';
     const USER_ALBUMS_URL = 'http://api.deezer.com/user/me/albums';
+    const USER_ALBUMS_CHART_URL = 'http://api.deezer.com/user/me/charts/albums';
     const USER_PLAYLISTS_URL = 'http://api.deezer.com/user/me/playlists';
     const ALBUM_URL = 'http://api.deezer.com/album';
     const PLAYLIST_URL = 'http://api.deezer.com/playlist';
@@ -177,12 +178,14 @@ class DeezerService {
             $index = rand(0, $max);
             $deezerAlbum = $albumList[$index];
             $album = new Album();
+            $album->setDeezerId($deezerAlbum['id']);
             $album->setArtistId($deezerAlbum['artist']['id']);
             $album->setArtistName($deezerAlbum['artist']['name']);
             $album->setName($deezerAlbum['title']);
             $album->setTracklist($deezerAlbum['tracklist']);
             $album->setCoverSmall($deezerAlbum['cover_small']);
             $album->setCover($deezerAlbum['cover_big']);
+            $album->setDeezerLink($deezerAlbum['link']);
             unset($albumList[$index]);
             $albumList = array_values($albumList);
             $restrictedAlbumsList[] = $album;
@@ -226,6 +229,39 @@ class DeezerService {
         return $album;
     }
 
+    /**
+     * Retrieves all albums of the users and most listened albums of the users.
+     * Return one of the less listened album.
+     * Tries to retrieve an album which is not in the top 5 most listened albums of the users.
+     * It's kind of a fake "less listened", sorry, this seems to be the only way to do this kind of thing with Deezer :)
+     * @return mixed|null
+     */
+    public function getLessListenedAlbum()
+    {
+        $allAlbums = $this->request(self::USER_ALBUMS_URL."?access_token=".$this->getAccessToken()."&limit=".self::ALBUMS_MAX);
+        $album = $this->getRandomAlbums($allAlbums['data'], 1);
+        $chart = $this->request(self::USER_ALBUMS_CHART_URL."?access_token=".$this->getAccessToken());
+        $i = 0;
+        $albumToSuggest = null;
+        $topFiveAlbumsId = array();
+        for($j = 0; $j < 5; $j++) {
+            $topFiveAlbumsId[] = $chart['data'][$j]['id'];
+        }
+        while($albumToSuggest === null && $i < self::TRACKS_MAX_TRIES) {
+            $i++;
+            if(!in_array($album[0]->getDeezerId(), $topFiveAlbumsId)) {
+                $albumToSuggest = $album[0];
+            } else {
+                $album = $this->getRandomAlbums($allAlbums['data'], 1);
+            }
+        }
+        if(!isset($albumToSuggest)) {
+            $albumToSuggest = $album[0];
+        }
+
+        return $albumToSuggest;
+    }
+
     protected function request($url, $method = "GET", $parameters = [])
     {
         $ch = curl_init($url);
@@ -249,6 +285,7 @@ class DeezerService {
         }
         return $response;
     }
+
 }
 
 

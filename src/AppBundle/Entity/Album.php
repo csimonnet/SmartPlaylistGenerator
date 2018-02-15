@@ -20,6 +20,8 @@ class Album
 
     protected $artistName;
 
+    protected $deezerLink;
+
     /**
      * @return mixed
      */
@@ -138,6 +140,15 @@ class Album
         return $this->deezerId;
     }
 
+    public function setDeezerLink($deezerLink)
+    {
+        $this->deezerLink = $deezerLink;
+        return $this;
+    }
 
+    public function getDeezerLink()
+    {
+        return $this->deezerLink;
+    }
 
 }

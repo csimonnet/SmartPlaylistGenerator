@@ -60,7 +60,7 @@ class PlaylistController extends Controller
 
                  $deezerService->sendPlaylistToDeezer($playlist);
                  $deezerService->logout();
-                 $session->getFlashBag()->add('notice', 'Playlist <a href="http://www.deezer.com/fr/playlist/'.$playlist->getDeezerId().'">"'.$playlist->getName().'"</a> envoyée sur Deezer' );
+                 $session->getFlashBag()->add('notice', 'Playlist <a target="_blank" href="http://www.deezer.com/fr/playlist/'.$playlist->getDeezerId().'">"'.$playlist->getName().'"</a> envoyée sur Deezer' );
                  return $this->redirect($this->generateUrl('playlist_prepare'));
              }
 
@@ -78,19 +78,21 @@ class PlaylistController extends Controller
     /**
      * @Route("/playlist/prepare", name="playlist_prepare")
      */
-     public function preparePlaylistAction(Request $request, DeezerService $deezerService, Session $session)
+     public function preparePlaylistAction(Request $request, DeezerService $deezerService)
      {
          if(!$deezerService->hasAccessToken()) {
              return $this->redirect($deezerService->getConnectUrl());
          }
 
+         $lessListenedAlbum = $deezerService->getLessListenedAlbum();
          $form = $this->createForm(PlaylistParametersType::class, null, array(
              'action' => $this->generateUrl('deezer_playlist_generate'),
              'method' => 'GET'
          ));
 
          return $this->render('playlist/prepare_playlist.html.twig', [
-             'form' => $form->createView()
+             'form' => $form->createView(),
+             'less_listened_album' => $lessListenedAlbum
          ]);
      }
 }

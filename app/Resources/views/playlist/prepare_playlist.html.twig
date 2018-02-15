@@ -1,8 +1,22 @@
 {% extends 'two-tiles.html.twig' %}
 
 {% block left %}
-    <img src="{{asset('bundles/app/images/logo.png')}}" />
-    <div class="description">Préparation de la génération</div>
+    <div class="prepare-disclaimer">
+        <img src="{{asset('bundles/app/images/logo.png')}}" />
+        <div class="description">Préparation de la génération</div>
+    </div>
+    <div class="to-listen-disclaimer">
+        Remplissez vos critères pour générer la playlist ci-contre. <br />
+        Sinon, vous pouvez déjà écouter un album que l'on a déterré dans votre bibliothèque !
+    </div>
+    <div class="to-listen">
+        <img src="{{ less_listened_album.cover }}" />
+        <div class="description">
+            <div class="title"><a target="blank" href="{{ less_listened_album.deezerLink }}">{{ less_listened_album.name }}</a></div>
+            <div class="artist">{{ less_listened_album.artistName }}</div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block right %}
