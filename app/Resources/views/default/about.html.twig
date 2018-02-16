@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+    <div class="main-container  {{ app.request.attributes.get("_route") }}">
+        <h1>A propos du SmartPlaylistGenerator</h1>
+
+        <ul>
+            <li>
+                <b>Le SmartPlaylistGenerator est totalement gratuit !</b> L'application a été développée uniquement dans le but de s'auto-former, et parce qu'elle m'était utile dans ma pratique de Deezer ;) <br />
+                De plus, étant à vocation ludique, il n'est pas exempt de bugs et de défauts ; mais il sera, dans la limite de mes possibilités niveau timing, amélioré régulièrement.
+            </li>
+            <li>
+                <b>Vos données ne sont pas utilisées à d'autres fins que de générer des playlists et vous faire des recommandations.</b>  Elle ne sont d'ailleurs pour l'instant aucunement persistées, et surtout pas vendues ou autre.
+            </li>
+            <li>
+                <b>Pour le moment, la génération analysera de façon aléatoire votre liste d'albums favoris sur Deezer. </b>
+            </li>
+            <li>
+                <b>Mais... il n'est pas si intelligent !</b> Certes oui, mais c'est encore un bébé. D'autres fonctionnalités sont prévues, notamment :
+                    <ul>
+                        <li>
+                            L'analyse de vos pistes favorites sur Deezer, de votre historique de lecture et de votre "flow".
+                        </li>
+                        <li>
+                            Un paramétrage plus poussé pour une génération plus fine !
+                        </li>
+                        <li>
+                            Une connexion utilisateur, pour pouvoir enrichir et caractériser vos morceaux... et générer des playlists plus originales.
+                        </li>
+                        <li>
+                            Une connexion avec Spotify (entre autres), et la possibilité de créer des playlists mixtes entre sites de streaming.
+                        </li>
+                        <li>
+                            ... et plein d'autres choses !
+                        </li>
+                    </ul>
+            </li>
+            <li>
+                <b>A propos de l'auteur</b>
+                Si l'envie vous en prend, vous pouvez me suivre sur twitter : <a href="https://twitter.com/chsimonnet" target="_blank">@chsimonnet</a>, <a href="https://www.linkedin.com/in/charlotte-simonnet-a524b834/">Linkedin</a>,
+                ou m'envoyer un mail à <a mailto="missimlab@gmail.com">missimlab@gmail.com</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

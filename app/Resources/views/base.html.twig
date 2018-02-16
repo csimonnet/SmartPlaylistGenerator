@@ -14,6 +14,15 @@
             <div class="header-content">
                 <div class="logo"></div>
                 <h1><a href="{{ path('homepage') }}">Smart Playlist Generator</a></h1>
+                <div class="menu">
+                    <ul>
+                        <li>
+                            <a href="{{ path('about') }}">
+                                A propos
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 {{ render(controller('AppBundle:User:userPanel')) }}
             </div>
         </header>

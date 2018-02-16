@@ -38,4 +38,12 @@ class DefaultController extends Controller
             'user_id' => ($this->get('session')->get('deezer_access_token') !== null) ?  : ''
         ]);
     }
+
+    /**
+     * @Route("/about", name="about")
+     */
+    public function aboutAction()
+    {
+        return $this->render('default/about.html.twig', []);
+    }
 }
