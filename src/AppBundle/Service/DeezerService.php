@@ -115,7 +115,7 @@ class DeezerService {
                 if($track !== null) {
                     $playlist->addTrack($track);
                 } else {
-                    $albumTryAgain = $this->getRandomAlbums($result['data'], 1);
+                    $albumTryAgain = $this->getRandomAlbums($albums, 1);
                     $track = $this->getRandomTrackFromAlbum($albumTryAgain[0]);
                     if($track !== null) {
                         $playlist->addTrack($track);
