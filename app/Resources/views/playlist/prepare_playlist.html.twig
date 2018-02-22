@@ -5,18 +5,19 @@
         <img src="{{asset('bundles/app/images/logo.png')}}" />
         <div class="description">Préparation de la génération</div>
     </div>
-    <div class="to-listen-disclaimer">
-        Remplissez vos critères pour générer la playlist ci-contre. <br />
-        Sinon, vous pouvez déjà écouter un album que l'on a déterré dans votre bibliothèque !
-    </div>
-    <div class="to-listen">
-        <img src="{{ less_listened_album.cover }}" />
-        <div class="description">
-            <div class="title"><a target="blank" href="{{ less_listened_album.deezerLink }}">{{ less_listened_album.name }}</a></div>
-            <div class="artist">{{ less_listened_album.artistName }}</div>
+    {% if not(has_error) %}
+        <div class="to-listen-disclaimer">
+            Remplissez vos critères pour générer la playlist ci-contre. <br />
+            Sinon, vous pouvez déjà écouter un album que l'on a déterré dans votre bibliothèque !
         </div>
-    </div>
-
+        <div class="to-listen">
+            <img src="{{ less_listened_album.cover }}" />
+            <div class="description">
+                <div class="title"><a target="blank" href="{{ less_listened_album.deezerLink }}">{{ less_listened_album.name }}</a></div>
+                <div class="artist">{{ less_listened_album.artistName }}</div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block right %}
@@ -25,22 +26,29 @@
             {{ message | raw }}
         </div>
     {% endfor %}
-    <div class="title">Préparez votre playlist !</div>
-    <div class="description">Choisissez ci-dessous la manière dont vous voulez générer votre playlist !</div>
-    {{ form_start(form) }}
-    <div class="form-row">
-        <div class="label">
-            {{ form_label(form.tracks_number) }}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-error">
+            {{ message | raw }}
         </div>
-        <div class="value">
-            {{ form_widget(form.tracks_number) }}
+    {% endfor %}
+    {% if not(has_error) %}
+        <div class="title">Préparez votre playlist !</div>
+        <div class="description">Choisissez ci-dessous la manière dont vous voulez générer votre playlist !</div>
+        {{ form_start(form) }}
+        <div class="form-row">
+            <div class="label">
+                {{ form_label(form.tracks_number) }}
+            </div>
+            <div class="value">
+                {{ form_widget(form.tracks_number) }}
+            </div>
         </div>
-    </div>
-    <div class="form-submit">
-        {{ form_label(form.save) }}
-        {{ form_widget(form.save) }}
-    </div>
-    {{ form_end(form) }}
+        <div class="form-submit">
+            {{ form_label(form.save) }}
+            {{ form_widget(form.save) }}
+        </div>
+        {{ form_end(form) }}
+    {% endif %}
     <div class="disclaimer">
         La playlist est générée à partir de vos albums favoris sur Deezer uniquement. Si vous n'avez aucun ou pas assez d'albums, la génération dysfonctionnera ou ne sera pas très intéressante.
         <br />

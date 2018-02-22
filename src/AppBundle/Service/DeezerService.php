@@ -4,7 +4,6 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Album;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Track;
@@ -98,9 +97,10 @@ class DeezerService {
         if($parameters['tracks_number'] > self::PLAYLIST_MAX_TRACK) {
             throw new \Exception('Ouh là, vous voulez beaucoup trop de tracks dans votre playlist ! (et vous avez un peu triché)');
         }
-        $url = self::USER_ALBUMS_URL."?access_token=".$this->getAccessToken()."&limit=".self::ALBUMS_MAX;
-        $result = $this->request($url);
-        $albumList = $this->getRandomAlbums($result['data'], $parameters['tracks_number']);
+
+        $albums = $this->getUserAlbums();
+
+        $albumList = $this->getRandomAlbums($albums, $parameters['tracks_number']);
 
         $playlist = new Playlist();
         $title = date('d/m/Y H:i:s');
@@ -124,6 +124,16 @@ class DeezerService {
             }
         }
         return $playlist;
+    }
+
+    public function getUserAlbums()
+    {
+        $url = self::USER_ALBUMS_URL."?access_token=".$this->getAccessToken()."&limit=".self::ALBUMS_MAX;
+        $result = $this->request($url);
+        if(sizeof($result['data']) === 0) {
+            throw new \Exception('Pas assez d\'albums sont dans votre bibliothèque, le générateur n\'arrive pas à travailler... ');
+        }
+        return $result['data'];
     }
 
     /**
@@ -238,7 +248,7 @@ class DeezerService {
      */
     public function getLessListenedAlbum()
     {
-        $allAlbums = $this->request(self::USER_ALBUMS_URL."?access_token=".$this->getAccessToken()."&limit=".self::ALBUMS_MAX);
+        $allAlbums = $this->getUserAlbums();
         $album = $this->getRandomAlbums($allAlbums['data'], 1);
         $chart = $this->request(self::USER_ALBUMS_CHART_URL."?access_token=".$this->getAccessToken());
         $i = 0;

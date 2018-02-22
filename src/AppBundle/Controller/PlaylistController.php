@@ -14,6 +14,7 @@ use AppBundle\Service\DeezerService;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 
 class PlaylistController extends Controller
@@ -78,13 +79,30 @@ class PlaylistController extends Controller
     /**
      * @Route("/playlist/prepare", name="playlist_prepare")
      */
-     public function preparePlaylistAction(Request $request, DeezerService $deezerService)
+     public function preparePlaylistAction(Request $request, DeezerService $deezerService, Session $session)
      {
+         $lessListenedAlbum = null;
          if(!$deezerService->hasAccessToken()) {
              return $this->redirect($deezerService->getConnectUrl());
          }
+         try {
+             $lessListenedAlbum = $deezerService->getLessListenedAlbum();
+         }
+         catch(AccessDeniedHttpException $e) {
+             $session->getFlashBag()->add('error', 'Vous avez été déconnecté subitement :\'( Essayez de vous reconnecter pour générer votre playlist !' );
+             return $this->render('playlist/prepare_playlist.html.twig', [
+                 'form' => null,
+                 'has_error' => true
+             ]);
+         }
+         catch(\Exception $e) {
+             $session->getFlashBag()->add('error', $e->getMessage());
+             return $this->render('playlist/prepare_playlist.html.twig', [
+                 'form' => null,
+                 'has_error' => true
+             ]);
+         }
 
-         $lessListenedAlbum = $deezerService->getLessListenedAlbum();
          $form = $this->createForm(PlaylistParametersType::class, null, array(
              'action' => $this->generateUrl('deezer_playlist_generate'),
              'method' => 'GET'
@@ -92,7 +110,8 @@ class PlaylistController extends Controller
 
          return $this->render('playlist/prepare_playlist.html.twig', [
              'form' => $form->createView(),
-             'less_listened_album' => $lessListenedAlbum
+             'less_listened_album' => $lessListenedAlbum,
+             'has_error' => false
          ]);
      }
 }
