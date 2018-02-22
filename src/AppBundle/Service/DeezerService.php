@@ -249,7 +249,7 @@ class DeezerService {
     public function getLessListenedAlbum()
     {
         $allAlbums = $this->getUserAlbums();
-        $album = $this->getRandomAlbums($allAlbums['data'], 1);
+        $album = $this->getRandomAlbums($allAlbums, 1);
         $chart = $this->request(self::USER_ALBUMS_CHART_URL."?access_token=".$this->getAccessToken());
         $i = 0;
         $albumToSuggest = null;
