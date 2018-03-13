@@ -1,97 +1,24 @@
 <?php
-namespace AppBundle\Entity\User;
+namespace AppBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="spg_users")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Table(name="spg_user")
+ * @ORM\Entity
  */
-class SpgUser implements UserInterface, EquatableInterface
+class SpgUser extends BaseUser
 {
     /**
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=25, unique=true)
-     */
-    private $username;
-
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    private $password;
-
-
-    private $salt;
-
-    private $roles;
-
-    private $deezerId;
-
-    public function __construct($username, $password, $salt, array $roles, $deezerId)
+    public function __construct()
     {
-        $this->username = $username;
-        $this->password = $password;
-        $this->salt = $salt;
-        $this->roles = $roles;
-        $this->deezerId = $deezerId;
-    }
-
-    public function getDeezerId()
-    {
-        return $this->deezerId;
-    }
-
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    public function eraseCredentials()
-    {
-    }
-
-    public function isEqualTo(UserInterface $user)
-    {
-        if (!$user instanceof DeezerUser) {
-            return false;
-        }
-
-        if ($this->password !== $user->getPassword()) {
-            return false;
-        }
-
-        if ($this->salt !== $user->getSalt()) {
-            return false;
-        }
-
-        if ($this->username !== $user->getUsername()) {
-            return false;
-        }
-
-        return true;
+        parent::__construct();
     }
 }
