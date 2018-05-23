@@ -10,6 +10,7 @@
             {{ message | raw }}
         </div>
     {% endfor %}
+    <div class="">Bienvenue !</div>
     <div class="description">Le "Smart Playlist Generator" vous permet de générer une playlist à partir de vos albums Deezer favoris !</div>
     <div class="connect-hint">Cliquez ci-dessous pour préparer la génération de votre playlist.</div>
     <div class="generate">
@@ -21,7 +22,7 @@
     </div>
     <div class="register_form">
         Inscrivez-vous pour bénéficier de quelques fonctionnalités supplémentaires (historique de vos playlists, notation des playlists et morceaux, génération de playlists mixtes...)
-        <!--todo bouton vers registration -->
+        <a href="{{ path('fos') }}"></a>
     </div>
 
 {% endblock %}
