@@ -1,0 +1,14 @@
+version: "3"
+services:
+  webapp:
+    build: .
+    ports:
+     - "81:80"
+    volumes:
+     - /home/abc-objectif/charlotte.simonnet/Workspace/projets_perso/SmartPlaylistGenerator:/var/www/smart-playlist-generator
+  database:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
