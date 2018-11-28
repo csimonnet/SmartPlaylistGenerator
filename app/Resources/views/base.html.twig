@@ -30,6 +30,11 @@
                                 A propos
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ path('fos_user_security_login') }}">
+                                Se connecter
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 {{ render(controller('AppBundle:User:userPanel')) }}

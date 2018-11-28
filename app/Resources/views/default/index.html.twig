@@ -10,9 +10,19 @@
             {{ message | raw }}
         </div>
     {% endfor %}
+    <div class="">Bienvenue !</div>
     <div class="description">Le "Smart Playlist Generator" vous permet de générer une playlist à partir de vos albums Deezer favoris !</div>
     <div class="connect-hint">Cliquez ci-dessous pour préparer la génération de votre playlist.</div>
     <div class="generate">
-        <a class="button-secondary" href="{{ deezer_url }}"> Se connecter avec Deezer</a>
+        <a class="button-secondary" href="{{ deezer_url }}"> Générer une playlist avec Deezer !</a>
     </div>
+    <div class="login_form">
+        Vous avez un compte ? Connectez-vous :
+        {{ render(controller('FOSUserBundle:Security:login')) }}
+    </div>
+    <div class="register_form">
+        Inscrivez-vous pour bénéficier de quelques fonctionnalités supplémentaires (historique de vos playlists, notation des playlists et morceaux, génération de playlists mixtes...)
+        <a href="{{ path('fos_user_registration_register') }}">S'inscrire</a>
+    </div>
+
 {% endblock %}
